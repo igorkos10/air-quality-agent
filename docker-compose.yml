@@ -1,0 +1,36 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: airly_mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-air_quality}
+      MARIADB_USER: ${DB_USER:-airly}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-airlypass}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./src/storage/schema.sql:/docker-entrypoint-initdb.d/001_schema.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  agent:
+    build: .
+    container_name: airly_agent
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./config:/app/config:ro
+    command: ["python", "-m", "src.cpp", "--config", "config/pipeline.json"]
+
+volumes:
+  mariadb_data:

@@ -1,0 +1,53 @@
+{
+  "agent": {
+    "name": "air-quality-agent",
+    "loop": true,
+    "interval_seconds": 300
+  },
+  "source": {
+    "type": "airly",
+    "base_url": "https://airapi.airly.eu/v2",
+    "installation_id": 122004,
+    "timeout_seconds": 10,
+    "retries": 3
+  },
+  "processing": {
+    "require_fields": [
+      "fromDateTime",
+      "tillDateTime",
+      "values"
+    ],
+    "map_values_to_rows": true,
+    "allowed_params": [
+      "PM10",
+      "PM25"
+    ],
+    "rounding": {
+      "value_decimals": 2
+    },
+    "timestamp_field": "tillDateTime"
+  },
+  "storage": {
+    "table": "measurements",
+    "mode": "upsert",
+    "unique_key": [
+      "installation_id",
+      "measured_at",
+      "param"
+    ]
+  },
+  "steps": [
+    {
+      "action": "fetch_current"
+    },
+    {
+      "action": "validate"
+    },
+    {
+      "action": "transform"
+    },
+    {
+      "action": "save"
+    }
+  ]
+}

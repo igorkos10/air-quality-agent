@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "agent",
+    "source",
+    "processing",
+    "storage",
+    "steps"
+  ],
+  "properties": {
+    "agent": {
+      "type": "object",
+      "required": [
+        "name",
+        "loop",
+        "interval_seconds"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "loop": {
+          "type": "boolean"
+        },
+        "interval_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "type",
+        "base_url",
+        "installation_id",
+        "timeout_seconds",
+        "retries"
+      ],
+      "properties": {
+        "type": {
+          "const": "airly"
+        },
+        "base_url": {
+          "type": "string"
+        },
+        "installation_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "retries": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "processing": {
+      "type": "object",
+      "required": [
+        "require_fields",
+        "map_values_to_rows",
+        "allowed_params",
+        "rounding",
+        "timestamp_field"
+      ],
+      "properties": {
+        "require_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "map_values_to_rows": {
+          "type": "boolean"
+        },
+        "allowed_params": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rounding": {
+          "type": "object",
+          "required": [
+            "value_decimals"
+          ],
+          "properties": {
+            "value_decimals": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            }
+          }
+        },
+        "timestamp_field": {
+          "type": "string",
+          "enum": [
+            "fromDateTime",
+            "tillDateTime"
+          ]
+        }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "required": [
+        "table",
+        "mode",
+        "unique_key"
+      ],
+      "properties": {
+        "table": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "insert",
+            "upsert"
+          ]
+        },
+        "unique_key": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "fetch_current",
+              "validate",
+              "transform",
+              "save"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Air Quality Agent (Airly -> MariaDB) — JSON-driven pipeline
 
-<<<<<<< HEAD
+
 Autor: Igor Kosecki  
 Nr albumu: 79472
 
@@ -9,7 +9,6 @@ Projekt: **Agent do pozyskiwania danych jakości powietrza z zapisem do bazy Mar
 Projekt: **Agent do pozyskiwania danych jakości powietrza z zapisem do bazy MariaDB, z logiką sterowaną plikiem JSON i wykonaniem w Pythonie w kontenerze Docker Compose.**
 
 ---
->>>>>>> cccd5b7 (Updated documentation and Docker test instructions)
 
 ## Co robi agent?
 
@@ -51,7 +50,7 @@ cd "C:\ścieżka\do\air-quality-agent"
 cd air-quality-agent
 ```
 
-⚠ Wszystkie dalsze komendy należy wykonywać w tym katalogu.
+Wszystkie dalsze komendy należy wykonywać w tym katalogu.
 
 ---
 
